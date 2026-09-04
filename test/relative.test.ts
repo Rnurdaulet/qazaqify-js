@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { relativeTime } from "../src/index.js";
+import { calendar, relativeTime } from "../src/index.js";
 
 function local(y: number, m: number, d: number, h = 0, min = 0, s = 0): Date {
   return new Date(y, m - 1, d, h, min, s);
@@ -28,5 +28,20 @@ describe("relativeTime", () => {
   it("uses calendar months", () => {
     expect(relativeTime(local(2026, 1, 4, 12), { now: local(2026, 2, 4, 12) })).toBe("1 ай бұрын");
     expect(relativeTime(local(2026, 2, 4, 12), { now: local(2026, 3, 6, 12) })).toBe("1 ай бұрын");
+  });
+});
+
+describe("calendar", () => {
+  const now = local(2026, 9, 4, 14, 30);
+
+  it("uses named days and weekday for the current week", () => {
+    expect(calendar(now, { now })).toBe("бүгін, 14:30");
+    expect(calendar(local(2026, 9, 3, 18, 20), { now })).toBe("кеше, 18:20");
+    expect(calendar(local(2026, 9, 5, 9, 0), { now })).toBe("ертең, 09:00");
+    expect(calendar(local(2026, 9, 2, 14, 0), { now })).toBe("сәрсенбі, 14:00");
+  });
+
+  it("falls back to a calendar date outside the week", () => {
+    expect(calendar(local(2026, 8, 1, 12, 0), { now })).toBe("1 тамыз 2026");
   });
 });

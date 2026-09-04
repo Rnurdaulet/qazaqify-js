@@ -31,6 +31,21 @@ qazaqify.formatDateTime(date);
 qazaqify.relativeTime(date);
 // "5 минут бұрын"
 
+qazaqify.calendar(date, { now });
+// "бүгін, 14:30"
+
+qazaqify.yearLabel(2026);
+// "2026 ж."
+
+qazaqify.month(9);
+// "Қыркүйек"
+
+qazaqify.weekday(5);
+// "Жұма"
+
+qazaqify.words(84.13);
+// "сексен төрт бүтін жүзден он үш"
+
 qazaqify.formatInterval(from, to);
 // "2026 ж. 4–10 қыркүйек"
 

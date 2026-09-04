@@ -45,6 +45,11 @@ export function formatDateTime(date: Date): string {
   return `${day} ${monthName(month, "wide")} ${year}, ${formatTime(date, { style: "short" })}`;
 }
 
+/** Year caption: yearLabel(2026) → «2026 ж.» */
+export function yearLabel(year: number): string {
+  return `${Math.trunc(year)} ж.`;
+}
+
 function zoneLabel(date: Date): string {
   if (date.getTimezoneOffset() === 0) {
     return "UTC";

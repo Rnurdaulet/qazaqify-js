@@ -1,6 +1,8 @@
-export { formatDate, formatTime, formatDateTime } from "./date.js";
+export { formatDate, formatTime, formatDateTime, yearLabel } from "./date.js";
 export type { Style, DateStyleOptions } from "./date.js";
-export { relativeTime } from "./relative.js";
+export { month, weekday, months, weekdays } from "./calendar-data.js";
+export type { NameWidth, NameForm, CalendarNameOptions } from "./calendar-data.js";
+export { relativeTime, calendar } from "./relative.js";
 export type { RelativeTimeOptions } from "./relative.js";
 export { formatInterval } from "./interval.js";
 export { number, percent, ordinal } from "./number.js";

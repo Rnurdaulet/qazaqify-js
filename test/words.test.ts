@@ -44,4 +44,28 @@ describe("words", () => {
       expect(words(n), `words(${n})`).toBe(want);
     }
   });
+
+  it("spells decimals by digit count, not a reduced fraction", () => {
+    expect(words(0.1)).toBe("нөл бүтін оннан бір");
+    expect(words(0.01)).toBe("нөл бүтін жүзден бір");
+    expect(words(0.001)).toBe("нөл бүтін мыңнан бір");
+    expect(words(84.13)).toBe("сексен төрт бүтін жүзден он үш");
+    expect(words(-84.13)).toBe("минус сексен төрт бүтін жүзден он үш");
+    expect(words(1.01)).toBe("бір бүтін жүзден бір");
+    expect(words(-1.01)).toBe("минус бір бүтін жүзден бір");
+    expect(words(0.5)).toBe("нөл бүтін оннан бес");
+    expect(words(-0.974)).toBe("минус нөл бүтін мыңнан тоғыз жүз жетпіс төрт");
+    expect(words(4515.753)).toBe("төрт мың бес жүз он бес бүтін мыңнан жеті жүз елу үш");
+    expect(words(2)).toBe("екі");
+  });
+
+  it("accepts decimal strings with . or ,", () => {
+    expect(words("12")).toBe("он екі");
+    expect(words("12,5")).toBe("он екі бүтін оннан бес");
+    expect(words("1.50")).toBe("бір бүтін жүзден елу");
+    expect(words("1.00")).toBe("бір");
+    expect(words("-0")).toBe("нөл");
+    expect(words(".5")).toBe("нөл бүтін оннан бес");
+    expect(words("0007")).toBe("жеті");
+  });
 });

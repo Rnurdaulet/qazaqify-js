@@ -1,5 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { formatDate, formatDateTime, formatInterval, formatTime } from "../src/index.js";
+import {
+  formatDate,
+  formatDateTime,
+  formatInterval,
+  formatTime,
+  month,
+  months,
+  weekday,
+  weekdays,
+  yearLabel,
+} from "../src/index.js";
 
 function local(y: number, m: number, d: number, h = 0, min = 0, s = 0): Date {
   return new Date(y, m - 1, d, h, min, s);
@@ -45,5 +55,58 @@ describe("formatInterval", () => {
     expect(formatInterval(a, b)).toBe("2026 ж. 4–10 қыркүйек");
     expect(formatInterval(a, c)).toBe("2026 ж. 4 қыркүйек – 2 қазан");
     expect(formatInterval(a, d)).toBe("2026 ж. 4 қыркүйек – 2027 ж. 5 қаңтар");
+  });
+});
+
+describe("yearLabel", () => {
+  it("adds ж. after the year", () => {
+    expect(yearLabel(2026)).toBe("2026 ж.");
+  });
+});
+
+describe("months", () => {
+  it("returns in-date month names", () => {
+    expect(months({ form: "inDate" })).toEqual([
+      "қаңтар",
+      "ақпан",
+      "наурыз",
+      "сәуір",
+      "мамыр",
+      "маусым",
+      "шілде",
+      "тамыз",
+      "қыркүйек",
+      "қазан",
+      "қараша",
+      "желтоқсан",
+    ]);
+  });
+});
+
+describe("month", () => {
+  it("uses standalone title case by default", () => {
+    expect(month(1)).toBe("Қаңтар");
+  });
+
+  it("abbreviates in-date form", () => {
+    expect(month(9, { width: "abbreviated", form: "inDate" })).toBe("қыр.");
+  });
+});
+
+describe("weekday", () => {
+  it("uses Sunday = 0", () => {
+    expect(weekday(1, { form: "inDate" })).toBe("дүйсенбі");
+    expect(weekday(5)).toBe("Жұма");
+  });
+
+  it("abbreviates in-date form", () => {
+    expect(weekday(1, { width: "abbreviated", form: "inDate" })).toBe("дс");
+  });
+});
+
+describe("weekdays", () => {
+  it("starts on Monday when mondayFirst", () => {
+    expect(weekdays({ mondayFirst: true, form: "inDate" })[0]).toBe("дүйсенбі");
+    expect(weekdays({ mondayFirst: true, form: "inDate" })[6]).toBe("жексенбі");
   });
 });

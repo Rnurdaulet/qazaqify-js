@@ -1,4 +1,5 @@
-import { midnight } from "./calendar-data.js";
+import { dateParts, midnight, monthName, weekdayName } from "./calendar-data.js";
+import { formatTime } from "./date.js";
 
 const TODAY = "бүгін";
 const YESTERDAY = "кеше";
@@ -68,6 +69,37 @@ export function relativeTime(date: Date, options?: RelativeTimeOptions): string 
     return NOW;
   }
   return calendarRelative(date, now);
+}
+
+/**
+ * Chat-style timestamp: «бүгін, 14:30», «сәрсенбі, 14:00», «1 тамыз 2026».
+ */
+export function calendar(date: Date, options?: RelativeTimeOptions): string {
+  const now = options?.now ?? new Date();
+  const clock = formatTime(date, { style: "short" });
+  const days = calendarDays(now, date);
+  switch (days) {
+    case 0:
+      return TODAY + ", " + clock;
+    case -1:
+      return YESTERDAY + ", " + clock;
+    case 1:
+      return TOMORROW + ", " + clock;
+  }
+  if (calendarDays(isoWeekStart(now), isoWeekStart(date)) === 0) {
+    return weekdayName(date.getDay()) + ", " + clock;
+  }
+  const { year, month: m, day } = dateParts(date);
+  return `${day} ${monthName(m, "wide")} ${year}`;
+}
+
+function isoWeekStart(t: Date): Date {
+  const m = midnight(t);
+  let wd = m.getDay();
+  if (wd === 0) {
+    wd = 7;
+  }
+  return new Date(m.getFullYear(), m.getMonth(), m.getDate() - (wd - 1));
 }
 
 function calendarRelative(t: Date, now: Date): string {
